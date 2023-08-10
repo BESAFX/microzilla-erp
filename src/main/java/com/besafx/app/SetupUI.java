@@ -24,6 +24,18 @@ public class SetupUI extends JFrame {
         JTextField jTextField2 = new JTextField();
         JTextField jTextField3 = new JTextField();
 
+        JTextArea jTextArea1 = new javax.swing.JTextArea();
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setBackground(new java.awt.Color(51, 51, 51));
+        jTextArea1.setForeground(new java.awt.Color(0, 153, 0));
+        jTextArea1.setFont(new java.awt.Font("Consolas", 0, 12));
+        jTextArea1.setEnabled(false);
+        jTextArea1.setFocusable(false);
+
+        JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1.setViewportView(jTextArea1);
+
         JButton jButton1 = new JButton();
         JButton jButton2 = new JButton();
 
@@ -38,7 +50,7 @@ public class SetupUI extends JFrame {
         setTitle("Microzilla ERP");
         setName("Microzilla ERP");
         setResizable(false);
-        setSize(400, 300);
+        setSize(400, 400);
         setLocationRelativeTo(null);
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
@@ -132,8 +144,9 @@ public class SetupUI extends JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jSeparator1)
+                                        .addComponent(jScrollPane1)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
                                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -144,13 +157,20 @@ public class SetupUI extends JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
+
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
+
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, javax.swing.GroupLayout.DEFAULT_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)
                                 .addContainerGap())
         );
 

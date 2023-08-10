@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %cyan(%date{dd/MM/yyyy-HH:mm:ss.SSS}) %magenta(%-5level) [%boldGreen(%.-5t)] %yellow(%.-20class{0}): %green(%msg%n%throwable)
+            </Pattern>
+        </layout>
+    </appender>
+
+    <appender name="File" class="ch.qos.logback.core.FileAppender">
+        <file>${HOME}/microzilla-logs/app.log</file>
+        <encoder>
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger level="DEBUG" name="com.besafx" additivity="false">
+        <appender-ref ref="File"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger level="ERROR" name="org.hibernate" additivity="false">
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger level="INFO" name="org.hibernate.SQL" additivity="false">
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger level="INFO" name="org.hibernate.type.descriptor.sql" additivity="false">
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger level="DEBUG" name="org.springframework.web" additivity="false">
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <!-- LOG everything at INFO level -->
+    <root level="INFO">
+        <appender-ref ref="File"/>
+        <appender-ref ref="Console"/>
+    </root>
+
+</configuration>
