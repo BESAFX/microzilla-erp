@@ -6,8 +6,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.*;
-
 @SpringBootApplication
 @RestController
 public class Start {
@@ -17,8 +15,8 @@ public class Start {
 				 .headless(false)
 				 .run(args);
 
-		SwingUtilities.invokeLater(() -> {
-			SetupUI ui = context.getBean(SetupUI.class);
+		java.awt.EventQueue.invokeLater(() -> {
+			SetupUI ui = new SetupUI(context);
 			ui.setVisible(true);
 		});
 	}
