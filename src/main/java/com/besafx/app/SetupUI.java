@@ -1,10 +1,14 @@
 package com.besafx.app;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class SetupUI extends JFrame {
 
@@ -32,8 +36,8 @@ public class SetupUI extends JFrame {
         textAreaLogs.setBackground(new java.awt.Color(51, 51, 51));
         textAreaLogs.setForeground(new java.awt.Color(0, 153, 0));
         textAreaLogs.setFont(new java.awt.Font("Consolas", Font.PLAIN, 12));
-        textAreaLogs.setEditable(false);
-        textAreaLogs.setFocusable(false);
+        textAreaLogs.setEditable(true);
+        textAreaLogs.setFocusable(true);
 
         JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         jScrollPane1.setViewportView(textAreaLogs);
@@ -180,6 +184,11 @@ public class SetupUI extends JFrame {
     }
 
     private void onClickShutdown(java.awt.event.ActionEvent evt) {
+        try {
+            FileUtils.write(new File(Start.LOG_FILE_PATH), "", Charset.defaultCharset());
+        } catch (IOException e) {
+            System.err.println("Cannot clear log file");
+        }
         System.exit(SpringApplication.exit(context, () -> 0));
     }
 

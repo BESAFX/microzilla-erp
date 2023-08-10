@@ -1,5 +1,9 @@
 package com.besafx.app;
 
+import org.apache.commons.io.input.Tailer;
+import org.apache.commons.io.input.TailerListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -9,11 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.*;
+import java.io.File;
+import java.util.Date;
 
 @SpringBootApplication
 @EnableScheduling
 @RestController
 public class Start {
+
+    private final Logger logger = LoggerFactory.getLogger(Start.class);
+
+    public static final String LOG_FILE_PATH = System.getProperty("user.home").concat("/microzilla-logs/app.log");
 
     private static SetupUI ui;
 
@@ -26,15 +36,20 @@ public class Start {
         java.awt.EventQueue.invokeLater(() -> {
             ui = new SetupUI(context);
             ui.setVisible(true);
+
+            TailerListener listener = new MyTrailerListener(ui);
+            File file = new File(LOG_FILE_PATH);
+            Tailer tailer = new Tailer(file, listener, 1000);
+
+            Thread thread = new Thread(tailer);
+            thread.setDaemon(true);
+            thread.start();
         });
     }
 
-    @Scheduled(fixedRate = 3000)
+    @Scheduled(fixedRate = 1000)
     public void printLogs() {
-        java.awt.EventQueue.invokeLater(() -> {
-            System.out.println("Hello ");
-            ui.getTextAreaLogs().setText("Hello World!");
-        });
+        logger.info("Hello" + new Date().toString());
     }
 
     @GetMapping(value = "/")
