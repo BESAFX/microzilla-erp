@@ -10,6 +10,8 @@ public class SetupUI extends JFrame {
 
     private final ConfigurableApplicationContext context;
 
+    private JTextArea textAreaLogs;
+
     public SetupUI(ConfigurableApplicationContext context) {
         this.context = context;
         initComponents();
@@ -24,17 +26,17 @@ public class SetupUI extends JFrame {
         JTextField jTextField2 = new JTextField();
         JTextField jTextField3 = new JTextField();
 
-        JTextArea jTextArea1 = new javax.swing.JTextArea();
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setBackground(new java.awt.Color(51, 51, 51));
-        jTextArea1.setForeground(new java.awt.Color(0, 153, 0));
-        jTextArea1.setFont(new java.awt.Font("Consolas", 0, 12));
-        jTextArea1.setEnabled(false);
-        jTextArea1.setFocusable(false);
+        textAreaLogs = new javax.swing.JTextArea();
+        textAreaLogs.setColumns(20);
+        textAreaLogs.setRows(5);
+        textAreaLogs.setBackground(new java.awt.Color(51, 51, 51));
+        textAreaLogs.setForeground(new java.awt.Color(0, 153, 0));
+        textAreaLogs.setFont(new java.awt.Font("Consolas", Font.PLAIN, 12));
+        textAreaLogs.setEditable(false);
+        textAreaLogs.setFocusable(false);
 
         JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
-        jScrollPane1.setViewportView(jTextArea1);
+        jScrollPane1.setViewportView(textAreaLogs);
 
         JButton jButton1 = new JButton();
         JButton jButton2 = new JButton();
@@ -183,6 +185,10 @@ public class SetupUI extends JFrame {
 
     private void onClickHide(java.awt.event.ActionEvent evt) {
         setState(JFrame.ICONIFIED);
+    }
+
+    public JTextArea getTextAreaLogs() {
+        return textAreaLogs;
     }
 
 }
