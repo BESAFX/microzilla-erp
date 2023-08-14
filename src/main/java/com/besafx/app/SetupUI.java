@@ -1,8 +1,6 @@
 package com.besafx.app;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +10,9 @@ import java.nio.charset.Charset;
 
 public class SetupUI extends JFrame {
 
-    private final ConfigurableApplicationContext context;
-
     private JTextArea textAreaLogs;
 
-    public SetupUI(ConfigurableApplicationContext context) {
-        this.context = context;
+    public SetupUI() {
         initComponents();
     }
 
@@ -51,13 +46,6 @@ public class SetupUI extends JFrame {
         JLabel jLabel4 = new JLabel();
 
         JSeparator jSeparator1 = new JSeparator();
-
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Microzilla ERP");
-        setName("Microzilla ERP");
-        setResizable(false);
-        setSize(400, 400);
-        setLocationRelativeTo(null);
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
@@ -167,7 +155,7 @@ public class SetupUI extends JFrame {
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, javax.swing.GroupLayout.DEFAULT_SIZE)
+                                .addComponent(jSeparator1, 1, 1, 1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 
                                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)
@@ -176,20 +164,34 @@ public class SetupUI extends JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)
+                                .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
 
         pack();
+
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Micro-Academy");
+        setName("Micro-Academy");
+        setResizable(false);
+        setPreferredSize(new Dimension(500, 500));
+        setSize(new Dimension(500, 500));
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - getWidth()) / 2;
+        int y = (screenSize.height - getHeight()) / 2;
+        setLocation(x, y);
+
+        setVisible(true);
     }
 
     private void onClickShutdown(java.awt.event.ActionEvent evt) {
         try {
             FileUtils.write(new File(Start.LOG_FILE_PATH), "", Charset.defaultCharset());
         } catch (IOException e) {
-            System.err.println("Cannot clear log file");
+            throw new RuntimeException(e);
         }
-        System.exit(SpringApplication.exit(context, () -> 0));
+        System.exit(0);
     }
 
     private void onClickHide(java.awt.event.ActionEvent evt) {

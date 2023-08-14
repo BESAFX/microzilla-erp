@@ -23,7 +23,7 @@ public class Start {
 
     private final Logger logger = LoggerFactory.getLogger(Start.class);
 
-    public static final String LOG_FILE_PATH = System.getProperty("user.home").concat("/microzilla-logs/app.log");
+    public static final String LOG_FILE_PATH = "microzilla-logs/app.log";
 
     private static SetupUI ui;
 
@@ -33,9 +33,8 @@ public class Start {
                 .run(args);
 
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        java.awt.EventQueue.invokeLater(() -> {
-            ui = new SetupUI(context);
-            ui.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            ui = new SetupUI();
 
             TailerListener listener = new MyTrailerListener(ui);
             File file = new File(LOG_FILE_PATH);
