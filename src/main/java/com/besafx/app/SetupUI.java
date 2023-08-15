@@ -180,6 +180,10 @@ public class SetupUI extends JFrame {
 
         pack();
 
+        initWindow();
+    }
+
+    private void initWindow() {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Micro Academy");
         setName("Micro Academy");
@@ -238,10 +242,6 @@ public class SetupUI extends JFrame {
         }
     }
 
-    public JTextArea getTextAreaLogs() {
-        return textAreaLogs;
-    }
-
     private void minimize() {
         setState(JFrame.ICONIFIED);
     }
@@ -270,6 +270,10 @@ public class SetupUI extends JFrame {
         });
         thread.setDaemon(false);
         thread.start();
+    }
+
+    public JTextArea getTextAreaLogs() {
+        return textAreaLogs;
     }
 
 }
