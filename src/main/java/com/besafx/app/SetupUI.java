@@ -1,23 +1,26 @@
 package com.besafx.app;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.Charset;
 
 public class SetupUI extends JFrame {
 
     private JTextArea textAreaLogs;
 
-    public SetupUI() {
+    private ConfigurableApplicationContext context;
+
+    public SetupUI(ConfigurableApplicationContext context) {
+        this.context = context;
         initComponents();
     }
 
@@ -35,9 +38,9 @@ public class SetupUI extends JFrame {
         textAreaLogs.setRows(5);
         textAreaLogs.setBackground(new java.awt.Color(51, 51, 51));
         textAreaLogs.setForeground(new java.awt.Color(0, 153, 0));
-        textAreaLogs.setFont(new java.awt.Font("Consolas", Font.PLAIN, 12));
-        textAreaLogs.setEditable(true);
-        textAreaLogs.setFocusable(true);
+        textAreaLogs.setFont(new java.awt.Font("Consolas", Font.PLAIN, 14));
+        textAreaLogs.setEditable(false);
+        textAreaLogs.setFocusable(false);
 
         JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         jScrollPane1.setViewportView(textAreaLogs);
@@ -73,9 +76,9 @@ public class SetupUI extends JFrame {
         jTextField3.setEnabled(false);
 
         jButton1.setText("Shut Down");
-        jButton1.addActionListener(this::onClickShutdown);
+        jButton1.addActionListener(e -> shutdown());
         jButton2.setText("Hide");
-        jButton2.addActionListener(this::onClickHide);
+        jButton2.addActionListener(e -> minimize());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -173,6 +176,26 @@ public class SetupUI extends JFrame {
                                 .addContainerGap())
         );
 
+        initTray();
+
+        pack();
+
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Micro Academy");
+        setName("Micro Academy");
+        setResizable(false);
+        setPreferredSize(new Dimension(500, 500));
+        setSize(new Dimension(500, 500));
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - getWidth()) / 2;
+        int y = (screenSize.height - getHeight()) / 2;
+        setLocation(x, y);
+
+        setVisible(true);
+    }
+
+    private void initTray() {
         if (!SystemTray.isSupported()) {
             System.out.println("SystemTray is not supported");
             return;
@@ -186,23 +209,24 @@ public class SetupUI extends JFrame {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        final TrayIcon trayIcon = new TrayIcon(img, "Micro-Academy", popup);
+        final TrayIcon trayIcon = new TrayIcon(img, "Micro Academy", popup);
         final SystemTray tray = SystemTray.getSystemTray();
 
         MenuItem aboutItem = new MenuItem("About");
 
-        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
-        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
+        MenuItem clearLogsItem = new MenuItem("Clear logs");
+        clearLogsItem.addActionListener(e -> clearLogs());
+
+        MenuItem restartItem = new MenuItem("Restart");
+        restartItem.addActionListener(e -> restart());
 
         MenuItem exitItem = new MenuItem("Exit");
-        exitItem.addActionListener(this::onClickShutdown);
+        exitItem.addActionListener(e -> shutdown());
 
-        //Add components to pop-up menu
         popup.add(aboutItem);
         popup.addSeparator();
-        popup.add(cb1);
-        popup.add(cb2);
-        popup.addSeparator();
+        popup.add(clearLogsItem);
+        popup.add(restartItem);
         popup.add(exitItem);
 
         trayIcon.setPopupMenu(popup);
@@ -212,39 +236,40 @@ public class SetupUI extends JFrame {
         } catch (AWTException e) {
             System.out.println("TrayIcon could not be added.");
         }
-
-        pack();
-
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Micro-Academy");
-        setName("Micro-Academy");
-        setResizable(false);
-        setPreferredSize(new Dimension(500, 500));
-        setSize(new Dimension(500, 500));
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (screenSize.width - getWidth()) / 2;
-        int y = (screenSize.height - getHeight()) / 2;
-        setLocation(x, y);
-
-        setVisible(true);
-    }
-
-    private void onClickShutdown(java.awt.event.ActionEvent evt) {
-        try {
-            FileUtils.write(new File(Start.LOG_FILE_PATH), "", Charset.defaultCharset());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        System.exit(0);
-    }
-
-    private void onClickHide(java.awt.event.ActionEvent evt) {
-        setState(JFrame.ICONIFIED);
     }
 
     public JTextArea getTextAreaLogs() {
         return textAreaLogs;
+    }
+
+    private void minimize() {
+        setState(JFrame.ICONIFIED);
+    }
+
+    private void shutdown() {
+        clearLogs();
+        System.exit(0);
+    }
+
+    private void clearLogs() {
+        try {
+            FileUtils.write(new File(Start.LOG_FILE_PATH), "", Charset.defaultCharset());
+            textAreaLogs.setText("");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void restart() {
+        ApplicationArguments args = this.context.getBean(ApplicationArguments.class);
+        Thread thread = new Thread(() -> {
+            context.close();
+            context = new SpringApplicationBuilder(Start.class)
+                    .headless(false)
+                    .run(args.getSourceArgs());
+        });
+        thread.setDaemon(false);
+        thread.start();
     }
 
 }

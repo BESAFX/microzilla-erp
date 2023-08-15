@@ -26,7 +26,7 @@ public class Start {
 
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         SwingUtilities.invokeLater(() -> {
-            ui = new SetupUI();
+            ui = new SetupUI(context);
 
             TailerListener listener = new MyTrailerListener(ui);
             File file = new File(LOG_FILE_PATH);
